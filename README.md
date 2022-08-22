@@ -83,6 +83,7 @@ wget -O $HOME/$WORKSPACE/validator.yaml https://raw.githubusercontent.com/mmc618
 aptos genesis generate-keys --assume-yes --output-dir $HOME/$WORKSPACE
 ```
 * Aşağıdaki gibi bir çıktı alacaksınız.
+  <br/>
 ![image](https://user-images.githubusercontent.com/102043225/185953845-cb3bd7bf-3387-4532-9692-6df46f16e1e1.png)
 
 ### Validator Bilgilerini Yapılandırma 
