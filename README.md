@@ -67,7 +67,7 @@ mv aptos /usr/local/bin
 
 ### Aptos Klasörü Oluşturma
 ```shell
-export WORKSPACE=aptos-test3
+export WORKSPACE=aptos
 mkdir ~/$WORKSPACE
 cd ~/$WORKSPACE
 ```
