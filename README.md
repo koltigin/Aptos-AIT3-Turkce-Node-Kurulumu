@@ -37,10 +37,10 @@ cd $HOME
 
 ### Gerekli Güncelemelerin ve Kütüphanelerin Kurulması
 ```shell
-sudo apt update && sudo apt upgrade -y
+apt update && apt upgrade -y
 ```
 ```shell
-sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony unzip liblz4-tool -y
+apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony zip unzip liblz4-tool -y
 ```
 
 ### Docker Kurulumu
@@ -57,19 +57,19 @@ chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 ```
 
+### Aptos Klasörü Oluşturma
+```shell
+export WORKSPACE=aptos
+mkdir ~/$WORKSPACE
+cd ~/$WORKSPACE
+```
+
 ### Aptos Kurulumu
 ```shell
 wget -qO aptos-cli.zip https://github.com/aptos-labs/aptos-core/releases/download/aptos-cli-v0.3.1/aptos-cli-0.3.1-Ubuntu-x86_64.zip
 unzip -o aptos-cli.zip
 chmod +x aptos
 mv aptos /usr/local/bin
-```
-
-### Aptos Klasörü Oluşturma
-```shell
-export WORKSPACE=aptos
-mkdir ~/$WORKSPACE
-cd ~/$WORKSPACE
 ```
 
 ### validator.yaml ve docker-compose.yaml Dosyalarını İndirme 
@@ -103,8 +103,10 @@ aptos genesis set-validator-configuration \
 ### `layout.yaml` Dosyası Oluşturma
 * `NODE_ADINIZ` bölümünü node adınız ne olacaksa onu yazıyoruz.
 ```shell
-echo "root_key: "D04470F43AB6AEAA4EB616B72128881EEF77346F2075FFE68E14BA7DEBD8095E"
-users: [NODE_ADINIZ]
+aptos genesis generate-layout-template --output-file $HOME/aptos/layout.yaml
+tee $HOME/aptos/layout.yaml > /dev/null <<EOF 
+root_key: "D04470F43AB6AEAA4EB616B72128881EEF77346F2075FFE68E14BA7DEBD8095E"
+users: ["NODE_ADINIZ"]
 chain_id: 43
 allow_new_validators: false
 epoch_duration_secs: 7200
@@ -116,13 +118,13 @@ recurring_lockup_duration_secs: 86400
 required_proposer_stake: 100000000000000
 rewards_apy_percentage: 10
 voting_duration_secs: 43200
-voting_power_increase_limit: 20" >layout.yaml
+voting_power_increase_limit: 20
+EOF
 ```
 
 ### AptosFramework Move bytecode Dosyasını İndirme
 ```shell
-wget https://github.com/aptos-labs/aptos-core/releases/download/aptos-framework-v0.2.0/framework.zip
-unzip framework.zip
+wget -q https://github.com/aptos-labs/aptos-core/releases/download/aptos-framework-v0.3.0/framework.mrb -P $HOME/$WORKSPACE
 ```
 
 ### Genesis blob ve waypoint Derlemesi Yapma
@@ -134,6 +136,7 @@ aptos genesis generate-genesis --local-repository-dir ~/$WORKSPACE --output-dir 
 ```shell
 docker-compose down -v
 docker-compose up -d
+docker-compose -f $HOME/aptos/docker-compose.yaml logs -f --tail 10
 ```
 
 ### Node Durumunu Kontrol Etme
@@ -153,7 +156,6 @@ https://aptoslabs.com/it3
 ```shell
 cat $HOME/aptoss/NODE_ADINIZ/operator.yaml
 ```
-
 
 ## Kaynaklar
 
