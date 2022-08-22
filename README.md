@@ -87,7 +87,7 @@ aptos genesis generate-keys --assume-yes --output-dir $HOME/$WORKSPACE
 `IP` değişkenine node ip ve portumuzu ilişkilendiriyoruz.
 * `NODE_ADINIZ` bölümünü node adınız ne olacaksa onu yazıyoruz.
 ```shell
-IP=$(curl icanhazip.com):6180
+IP=$(curl icanhazip.com)
 cd ~/$WORKSPACE
 aptos genesis set-validator-configuration \
     --local-repository-dir ~/$WORKSPACE \
